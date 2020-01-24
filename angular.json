@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "shows-list": {
+    "television": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/shows-list",
+            "outputPath": "dist/television",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "shows-list:build"
+            "browserTarget": "television:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "shows-list:build:production"
+              "browserTarget": "television:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "shows-list:build"
+            "browserTarget": "television:build"
           }
         },
         "test": {
@@ -115,15 +115,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "shows-list:serve"
+            "devServerTarget": "television:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "shows-list:serve:production"
+              "devServerTarget": "television:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "shows-list"
+  "defaultProject": "television"
 }
