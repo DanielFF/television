@@ -1,4 +1,8 @@
+import { Observable } from 'rxjs';
+import { Show } from './models/index';
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromFeature from './selectors';
 
 @Component({
   selector: 'app-shows',
@@ -7,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowsComponent implements OnInit {
 
-  constructor() { }
+  shows$: Observable<Show[]> = this.store.select(fromFeature.selectShowsList)
+
+  constructor(private store: Store<{ shows: Show[] }>) { }
 
   ngOnInit() {
+    this.store.dispatch({ type: '[Shows] Begin request' })
   }
 
 }
