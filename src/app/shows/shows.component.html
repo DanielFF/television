@@ -1,1 +1,14 @@
-<p>shows works!</p>
+<div *ngIf="!isLoading" class="shows-container">
+  <div class="shows-bar">
+    <app-search></app-search>
+    <app-pagination></app-pagination>
+  </div>
+  <app-shows-list [shows$]="shows$"></app-shows-list>
+  <div class="shows-bar bottom">
+    <app-pagination></app-pagination>
+  </div>
+</div>
+<!-- TODO make it reusable -->
+<div *ngIf="isLoading" class="shows-loader">
+  Loading...
+</div>

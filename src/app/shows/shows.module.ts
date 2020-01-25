@@ -1,4 +1,5 @@
 
+
 import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,8 @@ import { ShowsComponent } from './shows.component';
 
 import { ShowsEffects } from './effects/shows.effects';
 
+import { ShowsService } from './services/shows.service';
+
 import * as fromShowsReducer from './reducers';
 
 @NgModule({
@@ -28,6 +31,9 @@ import * as fromShowsReducer from './reducers';
     ShowsRoutingModule,
     StoreModule.forFeature(fromShowsReducer.showsFeatureKey, fromShowsReducer.reducer),
     EffectsModule.forFeature([ShowsEffects])
+  ],
+  providers: [
+    ShowsService
   ]
 })
 export class ShowsModule { }

@@ -1,1 +1,10 @@
-<p>show-item works!</p>
+<div *ngIf="show" class="show-item-container">
+  <img src="{{show.image}}" class="show-item-image">
+  <div class="show-item-content">
+    <h3 class="show-item-name">
+      {{show.name}}
+      <span class="show-item-rating">{{show.rating}}</span>
+    </h3>
+    <p class="show-item-description">{{show.summary}}</p>
+  </div>
+</div>

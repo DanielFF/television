@@ -4,7 +4,12 @@ import { showsFeatureKey, State } from './../reducers/index';
 
 export const selectShowsState = createFeatureSelector<State>(showsFeatureKey);
 
-export const selectShowsList = createSelector(
-    selectShowsState,
-    (state: State) => state.shows
+export const selectCurrentPageShows = createSelector(
+  selectShowsState,
+  (state: State) => state.pages[state.currentPage]
+);
+
+export const selectIsLoadingShows = createSelector(
+  selectShowsState,
+  (state: State) => state.isLoading
 );

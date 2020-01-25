@@ -1,0 +1,32 @@
+.show-item-container {
+  display: flex;
+  border: 1px solid black;
+  padding: 25px;
+  margin: 25px 0 0 0;
+  .show-item-image {
+    max-height: 100px;
+  }
+  .show-item-content {
+    width: 100%;
+    margin: 0 0 0 25px;
+    .show-item-name {
+      display: flex;
+      padding: 0 0 15px 0;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+@media all and (max-width: 800px) {
+  .show-item-container {
+    margin: 10px 0 0 0;
+    padding: 10px;
+    .show-item-content {
+      margin: 0 0 0 10px;
+      .show-item-name {
+        padding: 0 0 10px 0;
+      }
+    }
+  }
+}

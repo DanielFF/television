@@ -1,1 +1,6 @@
-<p>shows-list works!</p>
+<div class="shows-list-container">
+  <app-show-item 
+    *ngFor="let show of shows$ | async" 
+    [show]="show">
+  </app-show-item>
+</div>

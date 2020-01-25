@@ -1,0 +1,23 @@
+.shows-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 25px 0 0 0;
+
+  &.bottom {
+    justify-content: flex-end;
+    padding: 25px 0 25px 0;
+  }
+}
+
+.shows-loader {
+  text-align: center;
+  padding: 50px;
+}
+
+@media all and (max-width: 800px) {
+  .shows-bar {
+    display: block;
+    padding: 10px 0 0 0;
+  }
+}
