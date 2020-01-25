@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Show } from './models/index';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import * as fromFeature from './selectors';
 import { State } from './reducers/index';
@@ -14,39 +15,56 @@ import { State } from './reducers/index';
 })
 export class ShowsComponent implements OnInit, OnDestroy {
 
-  shows$: Observable<Show[]>
-  isLoading = true
-  activeSubscriptions = new Subscription()
-  currentPage: number
-  pagesCount = 20
+  activeSubscription: Subscription
 
-  constructor(private store: Store<State>) { 
-    this.onPageChanged = this.onPageChanged.bind(this);
+  shows$: Observable<Show[]>
+
+  isLoading = true
+  currentPage: number
+  pagesCount: number
+  search: string
+
+  constructor(
+    private store: Store<State>,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+
+    this.pageChangedCallback = this.pageChangedCallback.bind(this);
+    this.searchChangedCallback = this.searchChangedCallback.bind(this);
   }
 
   ngOnInit() {
-    this.shows$ = this.store.pipe(select(fromFeature.selectCurrentPageShows));
-    const loadingSubscription = this.store.pipe(select(fromFeature.selectIsLoadingShows))
-      .subscribe(isLoading => this.isLoading = isLoading);
-    const pageConfigSubscription = this.store.pipe(select(fromFeature.selectPageConfigShows))
-      .subscribe(({ currentPage, pagesCount }) => {
-        this.currentPage = currentPage;
-        this.pagesCount = pagesCount;
-      });
+    this.shows$ = this.store.pipe(select(fromFeature.selectShowsPaginatedList));
 
-    this.activeSubscriptions.add(loadingSubscription);
-    this.activeSubscriptions.add(pageConfigSubscription);
+    this.activeSubscription = this.store.pipe(select(fromFeature.selectShowsConfiguration))
+      .subscribe((configuration) => {
+        this.isLoading = configuration.isLoading;
+        this.currentPage = configuration.currentPage;
+        this.pagesCount = configuration.pagesCount;
+        this.search = configuration.search;
+      });
 
     this.store.dispatch(beginRequest());
   }
 
-  onPageChanged(currentPage) {
-    console.log(currentPage);
-    this.store.dispatch(setPage({currentPage}));
+  private changeQueryParams(page, search) {
+    const urlTree = this.router.parseUrl(this.router.url);
+
+    urlTree.queryParams['page'] = page;
+    urlTree.queryParams['search'] = search;
+    this.router.navigateByUrl(urlTree);
+  }
+
+  pageChangedCallback(page) {
+    this.changeQueryParams(page, this.search);
+  }
+
+  searchChangedCallback(search) {
+    this.changeQueryParams(1, search);
   }
 
   ngOnDestroy() {
-    this.activeSubscriptions.unsubscribe();
+    this.activeSubscription.unsubscribe();
   }
 
 }

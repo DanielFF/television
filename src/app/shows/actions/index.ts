@@ -20,3 +20,10 @@ export const setPage = createAction(
     currentPage: number
   }>()
 );
+
+export const setSearch = createAction(
+  '[Shows] Set search',
+  props<{
+    search: string
+  }>()
+);

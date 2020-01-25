@@ -37,6 +37,10 @@ const showsReducer = createReducer(
   on(showsActions.setPage, (state, { currentPage }) => ({
     ...state,
     currentPage
+  })),
+  on(showsActions.setSearch, (state, { search }) => ({
+    ...state,
+    search
   }))
 );
 

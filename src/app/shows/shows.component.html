@@ -1,8 +1,11 @@
 <div *ngIf="!isLoading" class="shows-container">
   <div class="shows-bar">
-    <app-search></app-search>
+    <app-search
+      [searchChangedCallback]="searchChangedCallback"
+      [search]="search">
+    </app-search>
     <app-pagination 
-      [onPageChanged]="onPageChanged" 
+      [pageChangedCallback]="pageChangedCallback" 
       [currentPage]="currentPage" 
       [pagesCount]="pagesCount">
     </app-pagination>
@@ -10,7 +13,7 @@
   <app-shows-list [shows$]="shows$"></app-shows-list>
   <div class="shows-bar bottom">
     <app-pagination
-      [onPageChanged]="onPageChanged" 
+      [pageChangedCallback]="pageChangedCallback" 
       [currentPage]="currentPage" 
       [pagesCount]="pagesCount">
     </app-pagination>

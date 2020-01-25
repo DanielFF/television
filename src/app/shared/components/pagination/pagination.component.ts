@@ -11,7 +11,7 @@ export class PaginationComponent {
 
   @Input() currentPage: number
   @Input() pagesCount: number
-  @Input() onPageChanged: Function
+  @Input() pageChangedCallback: Function
 
   paginationForm = new FormGroup({
     currentPage: new FormControl(
@@ -21,8 +21,8 @@ export class PaginationComponent {
   });
 
   onSubmit() {
-    if (this.onPageChanged) {
-      this.onPageChanged(this.paginationForm.value.currentPage);
+    if (this.pageChangedCallback) {
+      this.pageChangedCallback(this.paginationForm.value.currentPage);
     }
   }
 

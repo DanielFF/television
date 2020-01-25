@@ -1,5 +1,5 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="paginationForm">
   <input type="number" formControlName="currentPage" />
-  <span>of {{ pagesCount }}</span>
+  <span>of {{ pagesCount }} pages </span>
   <button type="submit" [disabled]="!paginationForm.valid">Go</button>
 </form>

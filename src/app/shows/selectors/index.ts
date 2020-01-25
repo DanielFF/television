@@ -4,17 +4,17 @@ import { showsFeatureKey, State } from './../reducers/index';
 
 export const selectShowsState = createFeatureSelector<State>(showsFeatureKey);
 
-export const selectCurrentPageShows = createSelector(
+export const selectShowsPaginatedList = createSelector(
   selectShowsState,
   (state: State) => state.pages[state.currentPage]
 );
 
-export const selectIsLoadingShows = createSelector(
+export const selectShowsConfiguration = createSelector(
   selectShowsState,
-  (state: State) => state.isLoading
-);
-
-export const selectPageConfigShows = createSelector(
-  selectShowsState,
-  (state: State) => ({ currentPage: state.currentPage, pagesCount: state.pagesCount})
+  (state: State) => ({
+    currentPage: state.currentPage,
+    pagesCount: state.pagesCount,
+    isLoading: state.isLoading,
+    search: state.search
+  })
 );
