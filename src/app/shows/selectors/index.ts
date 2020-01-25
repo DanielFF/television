@@ -13,3 +13,8 @@ export const selectIsLoadingShows = createSelector(
   selectShowsState,
   (state: State) => state.isLoading
 );
+
+export const selectPageConfigShows = createSelector(
+  selectShowsState,
+  (state: State) => ({ currentPage: state.currentPage, pagesCount: state.pagesCount})
+);

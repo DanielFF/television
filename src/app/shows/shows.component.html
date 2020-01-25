@@ -1,11 +1,19 @@
 <div *ngIf="!isLoading" class="shows-container">
   <div class="shows-bar">
     <app-search></app-search>
-    <app-pagination></app-pagination>
+    <app-pagination 
+      [onPageChanged]="onPageChanged" 
+      [currentPage]="currentPage" 
+      [pagesCount]="pagesCount">
+    </app-pagination>
   </div>
   <app-shows-list [shows$]="shows$"></app-shows-list>
   <div class="shows-bar bottom">
-    <app-pagination></app-pagination>
+    <app-pagination
+      [onPageChanged]="onPageChanged" 
+      [currentPage]="currentPage" 
+      [pagesCount]="pagesCount">
+    </app-pagination>
   </div>
 </div>
 <!-- TODO make it reusable -->

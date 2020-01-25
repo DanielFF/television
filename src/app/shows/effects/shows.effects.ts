@@ -1,3 +1,4 @@
+import { setData } from './../actions/index';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
@@ -13,7 +14,11 @@ export class ShowsEffects {
     mergeMap(() => this.showsService.getMockedList()
       .pipe(
         map(({ pages, pagesCount }) => {
-          return { type: '[Shows] Set data', pages, pagesCount, currentPage: 0 }
+          return setData({
+            pages, 
+            pagesCount, 
+            currentPage: 1
+          })
         }),
         catchError(() => EMPTY)
       )
@@ -25,3 +30,6 @@ export class ShowsEffects {
     private showsService: ShowsService
   ) { }
 }
+
+
+//{ type: '[Shows] Set data', }

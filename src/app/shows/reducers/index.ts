@@ -3,11 +3,11 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { Show } from './../models/index';
 import * as showsActions from '../actions';
 
-
-// TODO ts types
 export interface State {
   isLoading: boolean;
-  pages: {},
+  pages: {
+    pageNumber?: Show[]
+  },
   currentPage: number,
   pagesCount: number,
   search: string
@@ -17,20 +17,27 @@ const initialState: State = {
   isLoading: false,
   pages: {},
   pagesCount: 0,
-  currentPage: 0,
+  currentPage: 1,
   search: ''
 };
 
 const showsReducer = createReducer(
   initialState,
-  on(showsActions.beginRequest, state => ({ ...state, isLoading: true })),
-  on(showsActions.setData, (state, action) => ({
+  on(showsActions.beginRequest, state => ({
     ...state,
-    pages: action.pages,
-    pagesCount: action.pagesCount,
-    currentPage: action.currentPage,
+    isLoading: true
+  })),
+  on(showsActions.setData, (state, { pages, pagesCount, currentPage }) => ({
+    ...state,
+    pages,
+    pagesCount,
+    currentPage,
     isLoading: false
   })),
+  on(showsActions.setPage, (state, { currentPage }) => ({
+    ...state,
+    currentPage
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

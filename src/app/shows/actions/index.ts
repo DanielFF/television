@@ -7,5 +7,16 @@ export const beginRequest = createAction(
 
 export const setData = createAction(
   '[Shows] Set data',
-  props<{ pages: Show[], pagesCount: number, currentPage: number }>()
+  props<{
+    pages: {},
+    pagesCount: number,
+    currentPage: number
+  }>()
+);
+
+export const setPage = createAction(
+  '[Shows] Set page',
+  props<{
+    currentPage: number
+  }>()
 );

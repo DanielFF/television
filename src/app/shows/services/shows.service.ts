@@ -40,7 +40,7 @@ export class ShowsService {
         this.getPage(currentPage)
           .subscribe(
             (response) => {
-              result.pages[currentPage] = this.sanitizeResponse(response);
+              result.pages[currentPage + 1] = this.sanitizeResponse(response);
               currentPage++;
               tryConcatPageToResuts(page);
             },
@@ -61,7 +61,7 @@ export class ShowsService {
   getMockedList() {
     return from(Promise.resolve({
       pages: {
-        0: [
+        1: [
           {
 
             id: 5750,
@@ -82,7 +82,7 @@ export class ShowsService {
           }
 
         ],
-        1: [ {
+        2: [ {
 
           id: 5722,
           name: 'Mock 4',
