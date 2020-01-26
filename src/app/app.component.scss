@@ -3,14 +3,13 @@
   width: 100%;
   max-width: 1520px;
   padding: 0 25px;
-  background-color: #f3f3f3;
   header {
-    padding: 25px 0;
-    border-bottom: 1px solid #000;
+    padding: 15px 0;
+    border-bottom: 1px solid #dddddd;
     text-align: center;
+    text-transform: uppercase;
   }
 }
-  
 
 @media all and (max-width: 800px) {
   #page-wrapper {

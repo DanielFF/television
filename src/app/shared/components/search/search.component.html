@@ -1,4 +1,17 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="searchForm">
-  <input type="text" formControlName="search" />
+<form
+  (ngSubmit)="onSubmit()"
+  [formGroup]="searchForm"
+>
+  <input
+    type="text"
+    formControlName="search"
+    placeholder="Search..."
+  />
   <button type="submit">Search</button>
+  <button
+    *ngIf="searchForm.get('search').value.length"
+    class="negative"
+    type="button"
+    (click)="onCancelClick()"
+  >x</button>
 </form>

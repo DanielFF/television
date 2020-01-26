@@ -1,27 +1,36 @@
-<div *ngIf="!isLoading" class="shows-container">
+<div
+  *ngIf="!isLoading"
+  class="shows-container"
+>
   <div class="shows-bar">
     <app-search
       [searchChangedCallback]="searchChangedCallback"
-      [search]="search">
+      [search]="search"
+    >
     </app-search>
-    <app-pagination 
+    <app-pagination
       *ngIf="!search"
-      [pageChangedCallback]="pageChangedCallback" 
-      [currentPage]="currentPage" 
-      [pagesCount]="pagesCount">
+      [pageChangedCallback]="pageChangedCallback"
+      [currentPage]="currentPage"
+      [pagesCount]="pagesCount"
+    >
     </app-pagination>
   </div>
   <app-shows-list [shows$]="shows$"></app-shows-list>
   <div class="shows-bar bottom">
     <app-pagination
       *ngIf="!search"
-      [pageChangedCallback]="pageChangedCallback" 
-      [currentPage]="currentPage" 
-      [pagesCount]="pagesCount">
+      [pageChangedCallback]="pageChangedCallback"
+      [currentPage]="currentPage"
+      [pagesCount]="pagesCount"
+    >
     </app-pagination>
   </div>
 </div>
 <!-- TODO make it reusable -->
-<div *ngIf="isLoading" class="shows-loader">
+<div
+  *ngIf="isLoading"
+  class="shows-loader"
+>
   Loading...
 </div>

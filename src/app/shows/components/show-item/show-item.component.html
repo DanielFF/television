@@ -1,10 +1,23 @@
-<div *ngIf="show" class="show-item-container">
-  <img src="{{show.image}}" class="show-item-image">
+<div
+  *ngIf="show"
+  class="show-item-container"
+>
+  <img
+    src="{{show.image}}"
+    class="show-item-image"
+  >
   <div class="show-item-content">
     <h3 class="show-item-name">
-      {{show.name}}
-      <span class="show-item-rating">{{show.rating}}</span>
+      <div>
+        {{show.name}} <span *ngIf="show.rating">({{show.rating}})</span>
+      </div>
+      <a
+        *ngIf="show.imdb"
+        class="show-item-imdb-link"
+        href="https://www.imdb.com/title/{{show.imdb}}"
+        target="_blank"
+      >Zobacz w IMDB</a>
     </h3>
-    <p class="show-item-description">{{show.summary}}</p>
+    <p class="show-item-description">{{show.summary | smartTrim:100}}</p>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ShowsComponent } from './shows.component';
 
 const showsRoutes: Routes = [
-  { path: 'shows', component: ShowsComponent}
+  { path: 'shows', component: ShowsComponent }
 ];
 
 @NgModule({

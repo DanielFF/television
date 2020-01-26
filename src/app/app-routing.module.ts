@@ -6,7 +6,7 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 
 const routes: Routes = [
   { path: '', redirectTo: '/shows', pathMatch: 'full' },
-  { path: '*', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

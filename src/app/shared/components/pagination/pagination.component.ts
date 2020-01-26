@@ -1,15 +1,16 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { rangeValidator } from '../../validators/range.validator';
 
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+  styleUrls: ['./pagination.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginationComponent {
 
-  @Input() 
+  @Input()
   set currentPage(currentPage: number) {
     this.paginationForm.get('currentPage').setValue(currentPage);
     this.changeDetectorRef.detectChanges();
@@ -24,7 +25,7 @@ export class PaginationComponent {
     )
   });
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   onSubmit() {
     if (this.pageChangedCallback) {

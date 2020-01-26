@@ -22,7 +22,6 @@ import { routerReducerKey } from './app/reducers/router.reducer';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     StoreModule.forRoot({
       [routerReducerKey]: routerReducer
     }, {
@@ -39,7 +38,8 @@ import { routerReducerKey } from './app/reducers/router.reducer';
       stateKey: routerReducerKey,
       serializer: StoreRouterSerializer
     }),
-    SharedModule
+    SharedModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

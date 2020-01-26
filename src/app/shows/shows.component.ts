@@ -45,9 +45,9 @@ export class ShowsComponent implements OnInit, OnDestroy {
     const subscription2 = this.store.pipe(select(fromRoot.selectQueryParams))
       .subscribe(({ page = 1, search = '' }: any) => {
         const isInitialLoad = !this.currentPage && !this.search;
-       
+
         if (isInitialLoad) {
-          this.beginLoadingIndexOrSearch(search, page);
+          this.beginLoadingIndexOrSearch(page, search);
         }
 
         this.currentPage = page;
@@ -66,7 +66,7 @@ export class ShowsComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(urlTree);
   }
 
-  private beginLoadingIndexOrSearch(search, page) {
+  private beginLoadingIndexOrSearch(page, search) {
     const isSearching = !!search.length;
 
     if (isSearching) {
@@ -83,7 +83,7 @@ export class ShowsComponent implements OnInit, OnDestroy {
 
   searchChangedCallback(search) {
     this.changeQueryParams(1, search);
-    this.beginLoadingIndexOrSearch(search, 1);
+    this.beginLoadingIndexOrSearch(1, search);
   }
 
   ngOnDestroy() {
