@@ -3,7 +3,7 @@ import { Show } from './../models/index';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { from } from 'rxjs';
+import { AsyncSubject } from 'rxjs';
 
 @Injectable()
 export class ShowsService {
@@ -12,19 +12,41 @@ export class ShowsService {
 
   constructor(private http: HttpClient) { }
 
-  private mapResponseItemToShow({ id, name, rating: { average }, externals: { imdb }, summary, image }) {
-    return ({
+  private removeHtmlTags(stringWithHtml) {
+
+    return stringWithHtml ? stringWithHtml.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, '') : '';
+  }
+
+  private mapImage(image) {
+    return image ? image.medium : undefined;
+  }
+
+  private mapRating(rating) {
+    return rating ? rating.average : undefined;
+  }
+
+  private mapImdb(externals) {
+    return externals ? externals.imdb : undefined;
+  }
+
+  private mapResponseItemToShow({ id, name, rating, externals, summary, image }) {
+    const imdb = this.mapImdb(externals);
+    rating = this.mapRating(rating);
+    summary = this.removeHtmlTags(summary);
+    image = this.mapImage(image);
+
+    return {
       id,
       name,
-      rating: average,
+      rating,
       imdb,
-      summary: summary ? summary.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, '') : '',
-      image: image ? image.medium : void 0
-    })
+      summary,
+      image,
+    };
   }
 
   private sanitizeIndexPageResponse(response): Show[] {
-    return response.map(this.mapResponseItemToShow);
+    return response.map((responseItem) => this.mapResponseItemToShow(responseItem));
   }
 
   private sanitizeSearchResultsResponse(response): Show[] {
@@ -39,30 +61,30 @@ export class ShowsService {
   }
 
   getIndex() {
-    let currentPage = 0;
+    const index$ = new AsyncSubject();
     const result = {
       pages: {},
       pagesCount: 0
     };
-    const allPagesPromise = new Promise((resolve, reject) => {
-      const tryConcatPageToResuts = (page) => {
-        this.getIndexPage(currentPage)
-          .subscribe(
-            (response) => {
-              result.pages[currentPage + 1] = response;
-              currentPage++;
-              tryConcatPageToResuts(page);
-            },
-            () => {
-              result.pagesCount = Object.keys(result.pages).length;
-              resolve(result);
-            }
-          )
-      }
-      tryConcatPageToResuts(currentPage);
-    });
+    let currentPage = 0;
+    const tryConcatPageToResuts = (page) => {
+      this.getIndexPage(currentPage)
+        .subscribe(
+          (response) => {
+            result.pages[currentPage + 1] = response;
+            currentPage++;
+            tryConcatPageToResuts(page);
+          },
+          () => {
+            result.pagesCount = Object.keys(result.pages).length;
+            index$.next(result);
+            index$.complete();
+          }
+        )
+    }
+    tryConcatPageToResuts(currentPage);
 
-    return from(allPagesPromise);
+    return index$.asObservable();
   }
 
   getSearchResults(search: string) {

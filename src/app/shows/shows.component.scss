@@ -19,5 +19,9 @@
   .shows-bar {
     display: block;
     padding: 10px 0 0 0;
+    > *:not(:last-child) {
+      display: block;
+      padding: 0 0 10px 0;
+    }
   }
 }
