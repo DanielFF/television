@@ -1,6 +1,7 @@
 <div class="shows-list-container">
-  <app-show-item 
-    *ngFor="let show of shows$ | async" 
-    [show]="show">
+  <app-show-item *ngFor="let show of shows$ | async" [show]="show">
   </app-show-item>
+  <div *ngIf="(shows$ | async)?.length === 0">
+    No shows found. 
+  </div>
 </div>

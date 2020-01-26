@@ -8,39 +8,30 @@ export interface State {
   pages: {
     pageNumber?: Show[]
   },
-  currentPage: number,
-  pagesCount: number,
-  search: string
+  pagesCount: number
 }
 
 const initialState: State = {
   isLoading: false,
   pages: {},
-  pagesCount: 0,
-  currentPage: 1,
-  search: ''
+  pagesCount: 0
 };
 
 const showsReducer = createReducer(
   initialState,
-  on(showsActions.beginRequest, state => ({
+  on(showsActions.beginLoadingIndex, state => ({
     ...state,
     isLoading: true
   })),
-  on(showsActions.setData, (state, { pages, pagesCount, currentPage }) => ({
+  on(showsActions.beginLoadingSearch, state => ({
+    ...state,
+    isLoading: true
+  })),
+  on(showsActions.setLoadedData, (state, { pages, pagesCount }) => ({
     ...state,
     pages,
     pagesCount,
-    currentPage,
     isLoading: false
-  })),
-  on(showsActions.setPage, (state, { currentPage }) => ({
-    ...state,
-    currentPage
-  })),
-  on(showsActions.setSearch, (state, { search }) => ({
-    ...state,
-    search
   }))
 );
 

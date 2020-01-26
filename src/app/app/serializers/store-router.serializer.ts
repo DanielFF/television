@@ -14,7 +14,6 @@ export class StoreRouterSerializer implements RouterStateSerializer<RouterStateU
     while (route.firstChild) {
       route = route.firstChild;
     }
- 
     const {
       url,
       root: { queryParams },

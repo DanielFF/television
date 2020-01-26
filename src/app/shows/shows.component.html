@@ -5,6 +5,7 @@
       [search]="search">
     </app-search>
     <app-pagination 
+      *ngIf="!search"
       [pageChangedCallback]="pageChangedCallback" 
       [currentPage]="currentPage" 
       [pagesCount]="pagesCount">
@@ -13,6 +14,7 @@
   <app-shows-list [shows$]="shows$"></app-shows-list>
   <div class="shows-bar bottom">
     <app-pagination
+      *ngIf="!search"
       [pageChangedCallback]="pageChangedCallback" 
       [currentPage]="currentPage" 
       [pagesCount]="pagesCount">

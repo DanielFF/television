@@ -4,4 +4,5 @@ export interface Show {
     rating: number
     imdb: string
     summary: string
+    image: string
 }

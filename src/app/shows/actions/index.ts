@@ -1,29 +1,30 @@
-import { Show } from './../models/index';
 import { createAction, props } from '@ngrx/store';
 
-export const beginRequest = createAction(
-  '[Shows] Begin request'
-);
+export const ACTION_TYPES = {
+  BEGIN_LOADING_INDEX: '[Shows] Begin loading index',
+  BEGIN_LOADING_SEARCH: '[Shows] Begin loading search',
+  SET_LOADED_DATA: '[Shows] Set loaded data',
+  SET_INDEX_PAGE: '[Shows] Set index page'
+};
 
-export const setData = createAction(
-  '[Shows] Set data',
+export const beginLoadingIndex = createAction(
+  ACTION_TYPES.BEGIN_LOADING_INDEX,
   props<{
-    pages: {},
-    pagesCount: number,
-    currentPage: number
+    page: number
   }>()
 );
 
-export const setPage = createAction(
-  '[Shows] Set page',
-  props<{
-    currentPage: number
-  }>()
-);
-
-export const setSearch = createAction(
-  '[Shows] Set search',
+export const beginLoadingSearch = createAction(
+  ACTION_TYPES.BEGIN_LOADING_SEARCH,
   props<{
     search: string
+  }>()
+)
+
+export const setLoadedData = createAction(
+  ACTION_TYPES.SET_LOADED_DATA,
+  props<{
+    pages: {},
+    pagesCount: number
   }>()
 );

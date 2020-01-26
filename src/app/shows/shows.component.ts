@@ -1,11 +1,12 @@
-import { beginRequest, setPage } from './actions/index';
+import { beginLoadingIndex, beginLoadingSearch } from './actions/index';
 import { Observable, Subscription } from 'rxjs';
 import { Show } from './models/index';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import * as fromFeature from './selectors';
+import * as fromRoot from '../app/selectors';
 import { State } from './reducers/index';
 
 @Component({
@@ -15,7 +16,7 @@ import { State } from './reducers/index';
 })
 export class ShowsComponent implements OnInit, OnDestroy {
 
-  activeSubscription: Subscription
+  activeSubscriptions = new Subscription()
 
   shows$: Observable<Show[]>
 
@@ -26,8 +27,7 @@ export class ShowsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<State>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private router: Router) {
 
     this.pageChangedCallback = this.pageChangedCallback.bind(this);
     this.searchChangedCallback = this.searchChangedCallback.bind(this);
@@ -36,15 +36,26 @@ export class ShowsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.shows$ = this.store.pipe(select(fromFeature.selectShowsPaginatedList));
 
-    this.activeSubscription = this.store.pipe(select(fromFeature.selectShowsConfiguration))
+    const subscription1 = this.store.pipe(select(fromFeature.selectShowsConfiguration))
       .subscribe((configuration) => {
         this.isLoading = configuration.isLoading;
-        this.currentPage = configuration.currentPage;
         this.pagesCount = configuration.pagesCount;
-        this.search = configuration.search;
       });
 
-    this.store.dispatch(beginRequest());
+    const subscription2 = this.store.pipe(select(fromRoot.selectQueryParams))
+      .subscribe(({ page = 1, search = '' }: any) => {
+        const isInitialLoad = !this.currentPage && !this.search;
+       
+        if (isInitialLoad) {
+          this.beginLoadingIndexOrSearch(search, page);
+        }
+
+        this.currentPage = page;
+        this.search = search;
+      });
+
+    this.activeSubscriptions.add(subscription1);
+    this.activeSubscriptions.add(subscription2);
   }
 
   private changeQueryParams(page, search) {
@@ -55,16 +66,28 @@ export class ShowsComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(urlTree);
   }
 
+  private beginLoadingIndexOrSearch(search, page) {
+    const isSearching = !!search.length;
+
+    if (isSearching) {
+      this.store.dispatch(beginLoadingSearch({ search }));
+    } else {
+      this.store.dispatch(beginLoadingIndex({ page }));
+    }
+  }
+
   pageChangedCallback(page) {
-    this.changeQueryParams(page, this.search);
+    this.changeQueryParams(page, '');
+    this.currentPage = page;
   }
 
   searchChangedCallback(search) {
     this.changeQueryParams(1, search);
+    this.beginLoadingIndexOrSearch(search, 1);
   }
 
   ngOnDestroy() {
-    this.activeSubscription.unsubscribe();
+    this.activeSubscriptions.unsubscribe();
   }
 
 }

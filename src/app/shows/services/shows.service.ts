@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Show } from './../models/index';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -7,29 +8,39 @@ import { from } from 'rxjs';
 @Injectable()
 export class ShowsService {
 
-  constructor(private http: HttpClient) {
-  }
+  private API_BASE_URL = 'http://api.tvmaze.com';
+
+  constructor(private http: HttpClient) { }
 
   // TODO rewrite to the ts -> find casting to the interface fields problem fix
-  private sanitizeResponse(response) {
-    return response.map(({ id, name, rating: { average }, externals: { imdb }, summary, image }) => {
-      return ({
-        id,
-        name,
-        rating: average,
-        imdb,
-        summary,
-        image: image ? image.medium : void 0
-      })
-    });
+
+  private mapResponseItemToShow({ id, name, rating: { average }, externals: { imdb }, summary, image }) {
+    return ({
+      id,
+      name,
+      rating: average,
+      imdb,
+      summary,
+      image: image ? image.medium : void 0
+    })
   }
 
-  private getPage(page: number) {
-    return this.http.get(`http://api.tvmaze.com/shows?page=${page}`);
+  private sanitizeIndexPageResponse(response): Show[] {
+    return response.map(this.mapResponseItemToShow);
   }
 
-  // TODO maybe use rxjs only instead of recursivness, promises (check all operators)
-  getPaginatedShows() {
+  private sanitizeSearchResultsResponse(response): Show[] {
+    return response.map(({ show }) => this.mapResponseItemToShow(show));
+  }
+
+  private getIndexPage(page: number) {
+    return this.http.get(`${this.API_BASE_URL}/shows?page=${page}`)
+      .pipe(
+        map(response => this.sanitizeIndexPageResponse(response))
+      );
+  }
+
+  getIndex() {
     let currentPage = 0;
     const result = {
       pages: {},
@@ -37,10 +48,10 @@ export class ShowsService {
     };
     const allPagesPromise = new Promise((resolve, reject) => {
       const tryConcatPageToResuts = (page) => {
-        this.getPage(currentPage)
+        this.getIndexPage(currentPage)
           .subscribe(
             (response) => {
-              result.pages[currentPage + 1] = this.sanitizeResponse(response);
+              result.pages[currentPage + 1] = response;
               currentPage++;
               tryConcatPageToResuts(page);
             },
@@ -56,9 +67,15 @@ export class ShowsService {
     return from(allPagesPromise);
   }
 
+  getSearchResults(search: string) {
+    return this.http.get(`${this.API_BASE_URL}/search/shows?q=${search}`)
+      .pipe(
+        map(response => ({ [1]: this.sanitizeSearchResultsResponse(response) }))
+      );
+  }
 
   //TODO for development purposes only
-  getMockedList() {
+  getMockedList(page) {
     return from(Promise.resolve({
       pages: {
         1: [
@@ -82,7 +99,7 @@ export class ShowsService {
           }
 
         ],
-        2: [ {
+        2: [{
 
           id: 5722,
           name: 'Mock 4',

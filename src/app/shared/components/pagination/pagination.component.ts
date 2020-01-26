@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { rangeValidator } from '../../validators/range.validator';
 
@@ -9,7 +9,11 @@ import { rangeValidator } from '../../validators/range.validator';
 })
 export class PaginationComponent {
 
-  @Input() currentPage: number
+  @Input() 
+  set currentPage(currentPage: number) {
+    this.paginationForm.get('currentPage').setValue(currentPage);
+    this.changeDetectorRef.detectChanges();
+  }
   @Input() pagesCount: number
   @Input() pageChangedCallback: Function
 
@@ -19,6 +23,8 @@ export class PaginationComponent {
       [rangeValidator(() => 1, () => this.pagesCount)]
     )
   });
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   onSubmit() {
     if (this.pageChangedCallback) {

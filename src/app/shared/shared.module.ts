@@ -5,11 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms'
 
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { SearchComponent } from './components/search/search.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     PaginationComponent,
-    SearchComponent
+    SearchComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { SearchComponent } from './components/search/search.component';
   ],
   exports: [
     PaginationComponent,
-    SearchComponent
+    SearchComponent,
+    PageNotFoundComponent
   ]
 })
 export class SharedModule { }
